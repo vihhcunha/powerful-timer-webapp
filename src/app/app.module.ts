@@ -22,6 +22,8 @@ import { AddEditTimerComponent } from './components/setup/add-edit-timer/add-edi
 import { SecondsToDatePipe } from './pipes/secondsToDatePipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TimerControlComponent } from './components/timer/timer-control/timer-control.component';
+import { CdTimerModule } from 'angular-cd-timer';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AppLayoutComponent,
     BaseFormComponent,
     SetupListComponent,
-    AddEditTimerComponent
+    AddEditTimerComponent,
+    TimerControlComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ReactiveFormsModule,
     SecondsToDatePipe,
     BrowserAnimationsModule,
-    DragDropModule
+    DragDropModule,
+    CdTimerModule
   ],
   providers: [
     BaseService, 

@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="content-container text-center">
+        <div>
+            <h1>Timer</h1>
+        </div>
+    </div>
+
+    <div class="content-container text-center fs-1">
+        <p class="py-2 fs-3" *ngIf="chosedTimer">{{ chosedTimer.name }}</p>
+        <cd-timer [countdown]="true" [autoStart]="false" maxTimeUnit="hour" format="ms"
+            [startTime]="chosedTimer.seconds"></cd-timer>
+
+        <div class="py-2">
+            <button class="btn" (click)="startTimer()" *ngIf="!started">
+                <span class="material-symbols-outlined">
+                    play_circle
+                </span>
+            </button>
+
+            <button class="btn" (click)="pauseTimer()" *ngIf="started">
+                <span class="material-symbols-outlined">
+                    pause_circle
+                </span>
+            </button>
+
+            <button class="btn" (click)="resetTimer()">
+                <span class="material-symbols-outlined">
+                    stop_circle
+                </span>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="table-responsive pt-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Ordem</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Tempo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let timer of timers" [ngClass]="timer.timerId == chosedTimer.timerId ? 'bg-primary' : ''" (click)="selectTimer(timer)">
+                        <td>{{timer.order}}</td>
+                        <td>{{timer.name}}</td>
+                        <td>{{timer.seconds | secondsToHoursMinutesSeconds }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

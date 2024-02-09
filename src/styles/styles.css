@@ -139,3 +139,13 @@ a {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.table>:not(caption)>*>*{
+  background-color: transparent;
+  color: inherit;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+  color: white;
+}
