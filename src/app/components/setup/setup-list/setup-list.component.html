@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="content-container d-flex justify-content-between">
+        <div>
+            <h1>Timers</h1>
+        </div>
+        <div>
+            <a class="btn btn-success" (click)="addTimer()">+ Adicionar</a>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="table-responsive pt-4">
+            <table class="table table-hover align-middle table-striped ">
+                <thead>
+                    <tr>
+                        <th scope="col">Ordem</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Tempo</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                    <tr cdkDrag cdkDragLockAxis="y" *ngFor="let timer of timers">
+                        <td cdkDragHandle>{{timer.order}}</td>
+                        <td>{{timer.name}}</td>
+                        <td>{{timer.seconds | secondsToHoursMinutesSeconds }}</td>
+                        <td>
+                            <button class="btn btn-light btn-sm m-1" (click)="edit(timer)">
+                                <span class="material-symbols-outlined">edit</span>
+                            </button>
+                            <button class="btn btn-danger btn-sm m-1" (click)="delete(timer.timerId)">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </td>
+            
+                        <!-- Preview -->
+                        <div *cdkDragPreview matchSize="true" class="container dragdrop-placeholder">
+                            {{timer.name}}
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

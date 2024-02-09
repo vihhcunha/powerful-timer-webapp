@@ -17,13 +17,20 @@ import { TimerService } from './services/timer.service';
 import { AppLayoutComponent } from './components/_layouts/app-layout/app-layout.component';
 import { BaseFormComponent } from './components/base/base-form/base-form.component';
 import { ContentModalComponent } from './components/modals/content-modal.component';
+import { SetupListComponent } from './components/setup/setup-list/setup-list.component';
+import { AddEditTimerComponent } from './components/setup/add-edit-timer/add-edit-timer.component';
+import { SecondsToDatePipe } from './pipes/secondsToDatePipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
     AppComponent,
     SpinnerComponent,
     AppLayoutComponent,
-    BaseFormComponent
+    BaseFormComponent,
+    SetupListComponent,
+    AddEditTimerComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +41,10 @@ import { ContentModalComponent } from './components/modals/content-modal.compone
     NgbToastModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SecondsToDatePipe,
+    BrowserAnimationsModule,
+    DragDropModule
   ],
   providers: [
     BaseService, 

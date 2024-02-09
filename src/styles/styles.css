@@ -21,6 +21,9 @@ a {
   color: var(--bs-heading-color);
 }
 
+@import url(card.css);
+@import url(content.css);
+
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -41,6 +44,35 @@ a {
 
 .primary {
   color: var(--primary);
+}
+
+.navbar,
+.dropdown-item,
+.dropdown-menu {
+  background-color: var(--primary);
+  color: #f3f3f3;
+}
+
+.navbar-brand {
+  max-height: 50px;
+}
+
+.nav-link,
+.dropdown-item {
+  color: #f3f3f3;
+}
+
+.spinner-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background-color: rgba(156, 156, 156, 0.658);
+  z-index: 998;
 }
 
 .loader {
@@ -91,9 +123,10 @@ a {
 .btn-success {
   background-color: var(--primary);
   color: white;
+  border: none;
 }
 
-.btn-success:hover {
+.btn-success:hover, .btn-success:active, .btn-success:focus, .btn-success:disabled {
   background-color: var(--primary-hover);
   color: white;
 }
@@ -103,3 +136,6 @@ a {
     width: 100%;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppLayoutComponent } from './components/_layouts/app-layout/app-layout.component';
+import { SetupListComponent } from './components/setup/setup-list/setup-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -8,7 +9,7 @@ const routes: Routes = [
     path: '', component: AppLayoutComponent, 
     children: 
     [
-      { path: 'dashboard', component: AppLayoutComponent }
+      { path: 'setup', component: SetupListComponent }
     ]
   },
   { path: '**', redirectTo: '/dashboard' }

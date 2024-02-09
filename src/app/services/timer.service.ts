@@ -46,8 +46,8 @@ export class TimerService extends BaseService {
             );
     }
 
-    public deleteTimer(timer: Timer): Observable<Response<null>> {
-        return this.http.delete<Response<null>>(this._baseUrl + "api/timer/" + timer.timerId,
+    public deleteTimer(id: string): Observable<Response<null>> {
+        return this.http.delete<Response<null>>(this._baseUrl + "api/timer/" + id,
             { headers: this.headersAnonymous })
             .pipe(
                 catchError(super.handleError)

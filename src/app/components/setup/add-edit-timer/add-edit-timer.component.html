@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title" *ngIf="isNewTimer"> Adicionar timer </h4>
+    <h4 class="modal-title" *ngIf="!isNewTimer"> Editar timer </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<form class="py-2" [formGroup]="formObject">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12 py-2">
+                <input type="text" class="form-control" formControlName="name" placeholder="Nome"
+                    [ngClass]="{'invalid': displayMessage['name'] }">
+                <span class="text-danger" *ngIf="displayMessage['name']">
+                    <p [innerHTML]="displayMessage['name']" class="py-1"></p>
+                </span>
+            </div>
+
+            <div class="col-12 py-2">
+                <input type="number" class="form-control" formControlName="hours" placeholder="Horas"
+                    [ngClass]="{'invalid': displayMessage['hours'] }" min="0">
+                <span class="text-danger" *ngIf="displayMessage['hours']">
+                    <p [innerHTML]="displayMessage['hours']" class="py-1"></p>
+                </span>
+            </div>
+
+            <div class="col-12 py-2">
+                <input type="number" class="form-control" formControlName="minutes" placeholder="Minutos"
+                    [ngClass]="{'invalid': displayMessage['minutes'] }" min="0" max="60">
+                <span class="text-danger" *ngIf="displayMessage['minutes']">
+                    <p [innerHTML]="displayMessage['minutes']" class="py-1"></p>
+                </span>
+            </div>
+
+            <div class="col-12 py-2">
+                <input type="number" class="form-control" formControlName="seconds" placeholder="Segundos"
+                    [ngClass]="{'invalid': displayMessage['seconds'] }" min="0" max="60">
+                <span class="text-danger" *ngIf="displayMessage['seconds']">
+                    <p [innerHTML]="displayMessage['seconds']" class="py-1"></p>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" (click)="submit()" [disabled]="!formObject.valid">Salvar</button>
+    </div>
+</form>

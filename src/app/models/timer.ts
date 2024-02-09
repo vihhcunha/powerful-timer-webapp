@@ -4,3 +4,11 @@ export class Timer {
     public seconds: number;
     public order: number; 
 }
+
+export class AddEditTimer {
+    public timerId: string;
+    public name: string;
+    public hours: number;
+    public minutes: number;
+    public seconds: number;
+}

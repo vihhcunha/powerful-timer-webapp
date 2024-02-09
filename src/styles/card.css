@@ -1,0 +1,38 @@
+.card {
+    border-radius: 0.25rem; 
+    box-shadow: 0 10px 40px 0 rgba(62,57,107,.07), 0 2px 9px 0 rgba(62,57,107,.06); 
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+.card h2 {
+    font-size: 1.5em;
+    color: #2c2c2c;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.card h3 {
+    font-size: 1.3em;
+    color: #555555;
+}
+
+.card .icon {
+    font-size: 2.5em;
+}
+
+.card-description, .card-link {
+    color: #7a7a7a;
+    font-size: 0.8em;
+}
+
+.card-link-section hr{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #252422
+}
+
+.card-link-section a{
+    color: #868686;
+    font-weight: 300;
+    font-size: 0.8em;
+}
