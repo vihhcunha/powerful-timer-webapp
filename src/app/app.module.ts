@@ -13,11 +13,17 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TimerService } from './services/timer.service';
+import { AppLayoutComponent } from './components/_layouts/app-layout/app-layout.component';
+import { BaseFormComponent } from './components/base/base-form/base-form.component';
+import { ContentModalComponent } from './components/modals/content-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    AppLayoutComponent,
+    BaseFormComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +40,7 @@ import { RouterModule } from '@angular/router';
     BaseService, 
     Title, 
     LoaderService, 
+    TimerService,
     LoaderInterceptor, 
     DatePipe,
     httpInterceptorProviders
