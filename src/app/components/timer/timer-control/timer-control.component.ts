@@ -13,7 +13,7 @@ import { TimerWebSocket } from 'src/app/models/timerWebSocket';
 })
 export class TimerControlComponent {
   public chosedTimer: Timer = new Timer();
-  public timers: Timer[];
+  public timers: Timer[] = [];
   public started: boolean;
 
   @ViewChild(CdTimerComponent)
@@ -64,7 +64,7 @@ export class TimerControlComponent {
         next: (response) => {
           this.timers = response.object;
 
-          if (this.timers && this.timers.length > 0){
+          if (this.timers.length > 0){
             this.chosedTimer = this.timers[0];
             this.resetTimer();
           }
