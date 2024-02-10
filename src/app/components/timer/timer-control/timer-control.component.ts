@@ -63,8 +63,11 @@ export class TimerControlComponent {
       .subscribe({
         next: (response) => {
           this.timers = response.object;
-          this.chosedTimer = this.timers[0];
-          this.resetTimer();
+
+          if (this.timers && this.timers.length > 0){
+            this.chosedTimer = this.timers[0];
+            this.resetTimer();
+          }
         },
         error: (e) => this.abrirContentModal('Ops!', e)
       });
