@@ -4,6 +4,8 @@ import { TimerService } from 'src/app/services/timer.service';
 import { ContentModalComponent } from '../../modals/content-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CdTimerComponent } from 'angular-cd-timer';
+import { TimerWebSocketService } from 'src/app/services/timer-web-socket.service';
+import { TimerWebSocket } from 'src/app/models/timerWebSocket';
 
 @Component({
   selector: 'app-timer-control',
@@ -17,10 +19,43 @@ export class TimerControlComponent {
   @ViewChild(CdTimerComponent)
   public timer: CdTimerComponent;
 
-  constructor(private timerService: TimerService, private modalService: NgbModal){}
+  constructor(private timerService: TimerService, private modalService: NgbModal, private webSocketService: TimerWebSocketService) {
+
+  }
 
   ngOnInit() {
+    this.webSocketService.listenMessage()
+      .subscribe({
+        next: this.handleWebSocketMessage.bind(this)
+      })
     this.getTimers();
+  }
+
+  ngOnDestroy() {
+    this.webSocketService.disconnect();
+  }
+
+  public handleWebSocketMessage(timerWebSocket: TimerWebSocket) {
+    if (timerWebSocket.timerId != this.chosedTimer.timerId) {
+      var timer = this.timers.find(x => x.timerId == timerWebSocket.timerId);
+
+      if (timer != null)
+        this.selectTimer(timer, false);
+
+      return;
+    }
+
+    if (timerWebSocket.stop){
+      this.resetTimer(false);
+      return;
+    }
+
+    if (timerWebSocket.play && this.started == false){
+      this.startTimer(false);
+    }
+    else if (timerWebSocket.play == false && this.started){
+      this.pauseTimer(false);
+    }
   }
 
   public getTimers() {
@@ -35,23 +70,32 @@ export class TimerControlComponent {
       });
   }
 
-  public resetTimer() {
+  public resetTimer(sendWebSocket: boolean = true) {
     this.timer.reset();
     this.timer.countdown = true;
     this.timer.startTime = this.chosedTimer.seconds;
     this.timer.start();
-    this.pauseTimer();
-    this.started = false;
-  }
-  
-  public startTimer() {
-    this.timer.resume();
-    this.started = true;
-  }
-
-  public pauseTimer() {
     this.timer.stop();
     this.started = false;
+
+    if (sendWebSocket)
+      this.webSocketService.sendMessage(this.createTimerWebSocket(false, true));
+  }
+
+  public startTimer(sendWebSocket: boolean = true) {
+    this.timer.resume();
+    this.started = true;
+
+    if (sendWebSocket)
+      this.webSocketService.sendMessage(this.createTimerWebSocket(true));
+  }
+
+  public pauseTimer(sendWebSocket: boolean = true) {
+    this.timer.stop();
+    this.started = false;
+
+    if (sendWebSocket)
+      this.webSocketService.sendMessage(this.createTimerWebSocket(false));
   }
 
   public abrirContentModal(title: string, message: string) {
@@ -60,8 +104,17 @@ export class TimerControlComponent {
     modalRef.componentInstance.message = message;
   }
 
-  public selectTimer(timer: Timer) {
+  public selectTimer(timer: Timer, sendWebSocketMessage: boolean = true) {
     this.chosedTimer = timer;
-    this.resetTimer();
+    this.resetTimer(sendWebSocketMessage);
+  }
+
+  public createTimerWebSocket(play: boolean, stop: boolean = false): TimerWebSocket {
+    var timerWebSocket = new TimerWebSocket();
+    timerWebSocket.timerId = this.chosedTimer.timerId;
+    timerWebSocket.play = play;
+    timerWebSocket.stop = stop;
+
+    return timerWebSocket;
   }
 }

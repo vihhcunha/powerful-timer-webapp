@@ -16,7 +16,6 @@ import { RouterModule } from '@angular/router';
 import { TimerService } from './services/timer.service';
 import { AppLayoutComponent } from './components/_layouts/app-layout/app-layout.component';
 import { BaseFormComponent } from './components/base/base-form/base-form.component';
-import { ContentModalComponent } from './components/modals/content-modal.component';
 import { SetupListComponent } from './components/setup/setup-list/setup-list.component';
 import { AddEditTimerComponent } from './components/setup/add-edit-timer/add-edit-timer.component';
 import { SecondsToDatePipe } from './pipes/secondsToDatePipe';
@@ -24,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TimerControlComponent } from './components/timer/timer-control/timer-control.component';
 import { CdTimerModule } from 'angular-cd-timer';
+import { TimerWebSocketService } from './services/timer-web-socket.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import { CdTimerModule } from 'angular-cd-timer';
     Title, 
     LoaderService, 
     TimerService,
+    TimerWebSocketService,
     LoaderInterceptor, 
     DatePipe,
     httpInterceptorProviders
