@@ -10,21 +10,21 @@
         <cd-timer [countdown]="true" [autoStart]="false" maxTimeUnit="hour" format="ms"
             [startTime]="chosedTimer.seconds"></cd-timer>
 
-        <div class="py-2">
-            <button class="btn" (click)="startTimer()" *ngIf="!started">
+        <div class="py-2 d-flex flex-row justify-content-center">
+            <button class="btn btn-success m-2 d-flex align-items-center" (click)="startTimer()" *ngIf="!started">
                 <span class="material-symbols-outlined">
                     play_circle
                 </span>
             </button>
 
-            <button class="btn" (click)="pauseTimer()" *ngIf="started">
+            <button class="btn btn-secondary m-2 d-flex align-items-center" (click)="pauseTimer()" *ngIf="started">
                 <span class="material-symbols-outlined">
                     pause_circle
                 </span>
             </button>
 
-            <button class="btn" (click)="resetTimer()">
-                <span class="material-symbols-outlined">
+            <button class="btn btn-secondary m-2 d-flex align-items-center" (click)="resetTimer()">
+                <span class="material-symbols-outlined ">
                     stop_circle
                 </span>
             </button>
