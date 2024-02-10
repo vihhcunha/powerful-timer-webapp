@@ -9,12 +9,14 @@ import { TimerWebSocket } from 'src/app/models/timerWebSocket';
 
 @Component({
   selector: 'app-timer-control',
-  templateUrl: './timer-control.component.html'
+  templateUrl: './timer-control.component.html',
+  providers: [ TimerWebSocketService ]
 })
 export class TimerControlComponent {
   public chosedTimer: Timer = new Timer();
   public timers: Timer[] = [];
   public started: boolean;
+  public isCountingUp: boolean = false;
 
   @ViewChild(CdTimerComponent)
   public timer: CdTimerComponent;
@@ -74,12 +76,14 @@ export class TimerControlComponent {
   }
 
   public resetTimer(sendWebSocket: boolean = true) {
+    this.isCountingUp = false;
     this.timer.reset();
     this.timer.countdown = true;
     this.timer.startTime = this.chosedTimer.seconds;
     this.timer.start();
     this.timer.stop();
     this.started = false;
+    this.timer.onComplete.subscribe({next: this.handleCompleteTimer.bind(this)});
 
     if (sendWebSocket)
       this.webSocketService.sendMessage(this.createTimerWebSocket(false, true));
@@ -119,5 +123,14 @@ export class TimerControlComponent {
     timerWebSocket.stop = stop;
 
     return timerWebSocket;
+  }
+
+  public handleCompleteTimer() {
+    this.timer.reset();
+    this.timer.countdown = false;
+    this.timer.startTime = 0;
+    this.timer.endTime = -1200; // 20 minutes
+    this.timer.start();
+    this.isCountingUp = true;
   }
 }

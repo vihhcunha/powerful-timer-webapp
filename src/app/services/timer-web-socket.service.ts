@@ -23,10 +23,15 @@ export class TimerWebSocketService {
         this.socket.onclose = (event) => {
             console.log('WebSocket connection closed:', event);
         };
+
+        setInterval(() => {
+            if(this.socket.OPEN) this.socket.send("");
+        }, 60000);
     }
 
     public sendMessage(timerWebSocket: TimerWebSocket) {
-        this.socket.send(JSON.stringify(timerWebSocket));
+        if(this.socket.OPEN)
+            this.socket.send(JSON.stringify(timerWebSocket));
     }
 
     public disconnect() {
