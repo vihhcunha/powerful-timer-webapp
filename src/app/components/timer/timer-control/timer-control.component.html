@@ -5,25 +5,25 @@
         </div>
     </div>
 
-    <div class="content-container text-center fs-1" >
+    <div class="content-container text-center fs-1" style="padding-top: 100px; padding-bottom: 100px;">
         <p class="py-2 fs-3" *ngIf="timers.length > 0">{{ chosedTimer.name }}</p>
         <cd-timer [countdown]="true" [autoStart]="false" maxTimeUnit="hour" format="ms"
             [startTime]="chosedTimer.seconds"></cd-timer>
 
-        <div class="py-2 d-flex flex-row justify-content-center" *ngIf="timers.length > 0">
-            <button class="btn btn-success m-2 d-flex align-items-center" (click)="startTimer()" *ngIf="!started">
+        <div class="py-4 d-flex flex-row justify-content-center" *ngIf="timers.length > 0">
+            <button class="btn btn-success m-2 d-flex align-items-center justify-content-center" (click)="startTimer()" *ngIf="!started">
                 <span class="material-symbols-outlined">
                     play_circle
                 </span>
             </button>
 
-            <button class="btn btn-secondary m-2 d-flex align-items-center" (click)="pauseTimer()" *ngIf="started">
+            <button class="btn btn-secondary m-2 d-flex align-items-center justify-content-center" (click)="pauseTimer()" *ngIf="started">
                 <span class="material-symbols-outlined">
                     pause_circle
                 </span>
             </button>
 
-            <button class="btn btn-secondary m-2 d-flex align-items-center" (click)="resetTimer()">
+            <button class="btn btn-secondary m-2 d-flex align-items-center justify-content-center" (click)="resetTimer()">
                 <span class="material-symbols-outlined ">
                     stop_circle
                 </span>
