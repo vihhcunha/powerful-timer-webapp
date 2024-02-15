@@ -3,27 +3,26 @@ import { Timer } from 'src/app/models/timer';
 import { TimerService } from 'src/app/services/timer.service';
 import { ContentModalComponent } from '../../modals/content-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CdTimerComponent } from 'angular-cd-timer';
 import { TimerWebSocketService } from 'src/app/services/timer-web-socket.service';
-import { TimerWebSocket } from 'src/app/models/timerWebSocket';
+import { TimerWebSocketRequest, TimerWebSocketResponse } from 'src/app/models/timerWebSocket';
 
 @Component({
   selector: 'app-timer-control',
   templateUrl: './timer-control.component.html',
-  providers: [ TimerWebSocketService ]
+  providers: [TimerWebSocketService]
 })
 export class TimerControlComponent {
   public chosedTimer: Timer = new Timer();
   public timers: Timer[] = [];
   public started: boolean;
   public isCountingUp: boolean = false;
+  public hours: number;
+  public minutes: number;
+  public seconds: number;
 
-  @ViewChild(CdTimerComponent)
-  public timer: CdTimerComponent;
+  public math = Math;
 
-  constructor(private timerService: TimerService, private modalService: NgbModal, private webSocketService: TimerWebSocketService) {
-
-  }
+  constructor(private timerService: TimerService, private modalService: NgbModal, private webSocketService: TimerWebSocketService) { }
 
   ngOnInit() {
     this.webSocketService.listenMessage()
@@ -37,26 +36,38 @@ export class TimerControlComponent {
     this.webSocketService.disconnect();
   }
 
-  public handleWebSocketMessage(timerWebSocket: TimerWebSocket) {
+  public handleWebSocketMessage(timerWebSocket: TimerWebSocketResponse) {
     if (timerWebSocket.timerId != this.chosedTimer.timerId) {
       var timer = this.timers.find(x => x.timerId == timerWebSocket.timerId);
-
-      if (timer != null)
-        this.selectTimer(timer, false);
-
-      return;
+      this.selectTimer(timer!, false);
     }
 
-    if (timerWebSocket.stop){
+    if (timerWebSocket.stop) {
       this.resetTimer(false);
-      return;
     }
 
-    if (timerWebSocket.play && this.started == false){
+    if (timerWebSocket.play) {
       this.startTimer(false);
+      console.log(`${timerWebSocket.hours}:${timerWebSocket.minutes}:${timerWebSocket.seconds}`)
     }
-    else if (timerWebSocket.play == false && this.started){
+
+    if (timerWebSocket.pause) {
       this.pauseTimer(false);
+    }
+
+    this.hours = timerWebSocket.hours;
+    this.minutes = timerWebSocket.minutes;
+    this.seconds = timerWebSocket.seconds;
+
+    this.setIfItIsCountingUp();
+  }
+
+  setIfItIsCountingUp() {
+    if (this.hours >= 0 && this.minutes >= 0 && this.seconds >= 0){
+      this.isCountingUp = false;
+    }
+    else{
+      this.isCountingUp = true;
     }
   }
 
@@ -66,9 +77,12 @@ export class TimerControlComponent {
         next: (response) => {
           this.timers = response.object;
 
-          if (this.timers.length > 0){
+          if (this.timers.length > 0) {
             this.chosedTimer = this.timers[0];
-            this.resetTimer();
+            this.resetTimer(false);
+            this.hours = Math.floor(this.chosedTimer.seconds / 3600);
+            this.minutes = Math.floor((this.chosedTimer.seconds % 3600) / 60);
+            this.seconds = Math.floor(this.chosedTimer.seconds % 60);
           }
         },
         error: (e) => this.abrirContentModal('Ops!', e)
@@ -77,20 +91,13 @@ export class TimerControlComponent {
 
   public resetTimer(sendWebSocket: boolean = true) {
     this.isCountingUp = false;
-    this.timer.reset();
-    this.timer.countdown = true;
-    this.timer.startTime = this.chosedTimer.seconds;
-    this.timer.start();
-    this.timer.stop();
     this.started = false;
-    this.timer.onComplete.subscribe({next: this.handleCompleteTimer.bind(this)});
 
     if (sendWebSocket)
       this.webSocketService.sendMessage(this.createTimerWebSocket(false, true));
   }
 
   public startTimer(sendWebSocket: boolean = true) {
-    this.timer.resume();
     this.started = true;
 
     if (sendWebSocket)
@@ -98,7 +105,6 @@ export class TimerControlComponent {
   }
 
   public pauseTimer(sendWebSocket: boolean = true) {
-    this.timer.stop();
     this.started = false;
 
     if (sendWebSocket)
@@ -116,21 +122,14 @@ export class TimerControlComponent {
     this.resetTimer(sendWebSocketMessage);
   }
 
-  public createTimerWebSocket(play: boolean, stop: boolean = false): TimerWebSocket {
-    var timerWebSocket = new TimerWebSocket();
+  public createTimerWebSocket(play: boolean, stop: boolean = false): TimerWebSocketRequest {
+    var timerWebSocket = new TimerWebSocketRequest();
     timerWebSocket.timerId = this.chosedTimer.timerId;
     timerWebSocket.play = play;
+    timerWebSocket.pause = !play;
     timerWebSocket.stop = stop;
+    timerWebSocket.seconds = this.chosedTimer.seconds;
 
     return timerWebSocket;
-  }
-
-  public handleCompleteTimer() {
-    this.timer.reset();
-    this.timer.countdown = false;
-    this.timer.startTime = 0;
-    this.timer.endTime = -1200; // 20 minutes
-    this.timer.start();
-    this.isCountingUp = true;
   }
 }

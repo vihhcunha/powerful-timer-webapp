@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { TimerWebSocket } from '../models/timerWebSocket';
+import { TimerWebSocketRequest, TimerWebSocketResponse } from '../models/timerWebSocket';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -29,7 +29,7 @@ export class TimerWebSocketService {
         }, 60000);
     }
 
-    public sendMessage(timerWebSocket: TimerWebSocket) {
+    public sendMessage(timerWebSocket: TimerWebSocketRequest) {
         if(this.socket.OPEN)
             this.socket.send(JSON.stringify(timerWebSocket));
     }
@@ -38,8 +38,8 @@ export class TimerWebSocketService {
         this.socket.close();
     }
 
-    public listenMessage(): Observable<TimerWebSocket> {
-        var observer = new Observable<TimerWebSocket>((observer) => {
+    public listenMessage(): Observable<TimerWebSocketResponse> {
+        var observer = new Observable<TimerWebSocketResponse>((observer) => {
             this.socket.onmessage = (event) => {
                 observer.next(JSON.parse(event.data));
             }

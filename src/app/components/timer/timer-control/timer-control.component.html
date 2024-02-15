@@ -7,8 +7,15 @@
 
     <div class="content-container text-center fs-1" style="padding-top: 100px; padding-bottom: 100px;">
         <p class="py-2 fs-3" *ngIf="timers.length > 0">{{ chosedTimer.name }}</p>
-        <cd-timer [countdown]="true" [autoStart]="false" maxTimeUnit="hour" format="intelli"
-            [startTime]="chosedTimer.seconds" (onComplete)="handleCompleteTimer()" [ngClass]="isCountingUp ? 'text-danger': ''"></cd-timer>
+
+        <div>
+            <h1 [ngClass]="isCountingUp ? 'text-danger': ''" style="font-size: 2.3em;">
+                <span *ngIf="isCountingUp">- </span>
+                <span *ngIf="hours">{{math.abs(hours)}}h </span>
+                <span *ngIf="minutes">{{math.abs(minutes)}}min </span>
+                <span *ngIf="seconds || started">{{math.abs(seconds)}}s </span>
+            </h1>
+        </div>
 
         <div class="py-4 d-flex flex-row justify-content-center" *ngIf="timers.length > 0">
             <button class="btn btn-success m-2 d-flex align-items-center justify-content-center" (click)="startTimer()" *ngIf="!started">
